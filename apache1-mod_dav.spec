@@ -17,7 +17,7 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		mod_name	dav
 Name:		apache-mod_%{mod_name}
 Version:	1.0.3
-Release:	4
+Release:	5
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
@@ -151,8 +151,6 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},/etc/httpd,/var/lock/mod_dav}
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/mod_dav.conf
 
-gzip -9nf README CHANGES INSTALL
-
 %post
 %{_sbindir}/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
 if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_dav.conf" /etc/httpd/httpd.conf; then
@@ -178,7 +176,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz LICENSE.html
+%doc README CHANGES INSTALL LICENSE.html
 %config(noreplace) /etc/httpd/mod_dav.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
