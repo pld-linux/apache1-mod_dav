@@ -1,0 +1,4 @@
+- added format patch with fix for possible format string problem
+  (doesn't affect unmodified mod_dav, but can lead to security hole if
+   someone used mod_dav sources with third-party modifications)
+- release 6
