@@ -1,0 +1,3 @@
+- removed --with-expat configure option due to required expat(-devel)
+  now we don't need to patch configure script; location of expat
+  headers will be autodetected
