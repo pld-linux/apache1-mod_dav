@@ -137,7 +137,7 @@ Fusion ×¦Ä NetObjects.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-aclocal
+%{__aclocal}
 %{__autoconf}
 %configure \
 	--with-apxs=%{apxs} \
