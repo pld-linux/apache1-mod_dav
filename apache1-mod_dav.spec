@@ -42,12 +42,12 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"
 %configure \
 	--with-apxs=%{_sbindir}/apxs
-%{__make} APXS=/usr/sbin/apxs
+%{__make} APXS=%{_sbindir}/apxs
 
 %install
+rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_pkglibdir}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
