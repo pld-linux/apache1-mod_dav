@@ -17,12 +17,13 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		mod_name	dav
 Name:		apache-mod_%{mod_name}
 Version:	1.0.3
-Release:	3
+Release:	4
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 URL:		http://www.webdav.org/mod_dav/
 Prereq:		%{_sbindir}/apxs
+BuildRequires:	expat-devel
 BuildRequires:	%{apxs}
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -138,7 +139,8 @@ Fusion в╕д NetObjects.
 aclocal
 autoconf
 %configure \
-	--with-apxs=%{apxs}
+	--with-apxs=%{apxs} \
+	--with-expat=%{_prefix}
 %{__make} APXS=%{apxs}
 
 %install
