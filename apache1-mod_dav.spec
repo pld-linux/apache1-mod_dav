@@ -1,7 +1,7 @@
-%define		apache_version	1.3.6
-%define		mod_name	dav
 Summary:	WebDAV module for the Apache Web server
 Summary(pl):	Modu³ WebDAV dla webserwera Apache
+%define		apache_version	1.3.6
+%define		mod_name	dav
 Name:		apache-mod_%{mod_name}
 Version:	1.0.2
 Release:	1
@@ -9,15 +9,16 @@ Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
 License:	OSI Approved
-Source0:	http://www.webdav.org/mod_%{mod_name}/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
-URL:		http://www.webdav.org/mod_%{mod_name}
-Prereq:		%{_sbindir}/apxs
-BuildRequires:	%{_sbindir}/apxs
+Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
+URL:		http://www.webdav.org/mod_dav/
+Prereq:		/usr/sbin/apxs
+BuildRequires:	/usr/sbin/apxs
 BuildRequires:	expat-devel
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
 Requires:	apache(EAPI)		>= %{apache_version}
 Requires:	expat
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	mod_dav
 
 %define		_pkglibdir	%(%{_sbindir}/apxs -q LIBEXECDIR)
 
@@ -41,14 +42,15 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"; export CFLAGS
-%configure --with-apxs=%{_sbindir}/apxs
-%{__make} APXS=%{_sbindir}/apxs
+CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"
+%configure \
+	--with-apxs=%{_sbindir}/apxs
+%{__make} APXS=/usr/sbin/apxs
 
 %install
 install -d $RPM_BUILD_ROOT%{_pkglibdir}
-install -m 755 lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
-strip --strip-unneeded $RPM_BUILD_ROOT%{_pkglibdir}/* 
+
+install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
 
 gzip -9nf README CHANGES INSTALL
 
@@ -71,5 +73,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {README,CHANGES,INSTALL}.gz LICENSE.html
+%doc *.gz LICENSE.html
 %attr(755,root,root) %{_pkglibdir}/*
