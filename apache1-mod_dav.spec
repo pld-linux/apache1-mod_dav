@@ -1,3 +1,4 @@
+%define 	apxs	/usr/sbin/apxs
 Summary:	WebDAV module for the Apache Web server
 Summary(cs):	DAV modul pro WWW server Apache
 Summary(da):	En DAV-modul for Apache
@@ -35,8 +36,8 @@ Group(sv):	Nätverk/Demoner
 Group(uk):	íÅÒÅÖÁ/äÅÍÏÎÉ
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 URL:		http://www.webdav.org/mod_dav/
-Prereq:		/usr/sbin/apxs
-BuildRequires:	/usr/sbin/apxs
+Prereq:		%{_sbindir}/apxs
+BuildRequires:	%{apxs}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
@@ -44,7 +45,7 @@ Requires:	apache(EAPI)		>= %{apache_version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mod_dav
 
-%define		_pkglibdir	%(%{_sbindir}/apxs -q LIBEXECDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
 
 %description
 mod_dav enables Apache to understand DAV protocol (extensions to
@@ -151,8 +152,8 @@ Fusion ×¦Ä NetObjects.
 aclocal
 autoconf
 %configure \
-	--with-apxs=/usr/sbin/apxs
-%{__make} APXS=/usr/sbin/apxs
+	--with-apxs=%{apxs}
+%{__make} APXS=%{apxs}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -163,14 +164,14 @@ install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
 gzip -9nf README CHANGES INSTALL
 
 %post
-/usr/sbin/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+%{_sbindir}/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
 if [ -f /var/lock/subsys/httpd ]; then
 	%{_sysconfdir}/rc.d/init.d/httpd restart 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-	/usr/sbin/apxs -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+	%{_sbindir}/apxs -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
