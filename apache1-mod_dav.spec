@@ -17,11 +17,12 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		mod_name	dav
 Name:		apache-mod_%{mod_name}
 Version:	1.0.3
-Release:	5
+Release:	6
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 Source1:	apache1-mod_dav.conf
+Patch0:		%{name}-format.patch
 URL:		http://www.webdav.org/mod_dav/
 BuildRequires:	expat-devel
 BuildRequires:	%{apxs}
@@ -137,6 +138,7 @@ Fusion в╕д NetObjects.
 
 %prep
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
+%patch -p1
 
 %build
 %{__aclocal}
