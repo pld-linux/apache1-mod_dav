@@ -3,20 +3,20 @@ Summary(pl):	Modu³ WebDAV dla webserwera Apache
 %define		apache_version	1.3.6
 %define		mod_name	dav
 Name:		apache-mod_%{mod_name}
-Version:	1.0.2
+Version:	1.0.3
 Release:	1
+License:	OSI Approved
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
-License:	OSI Approved
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 URL:		http://www.webdav.org/mod_dav/
 Prereq:		/usr/sbin/apxs
 BuildRequires:	/usr/sbin/apxs
-BuildRequires:	expat-devel
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
 Requires:	apache(EAPI)		>= %{apache_version}
-Requires:	expat
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mod_dav
 
@@ -42,9 +42,11 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-%configure2_13 \
-	--with-apxs=%{_sbindir}/apxs
-%{__make} APXS=%{_sbindir}/apxs
+aclocal
+autoconf
+%configure \
+	--with-apxs=/usr/sbin/apxs
+%{__make} APXS=/usr/sbin/apxs
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -55,7 +57,7 @@ install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
 gzip -9nf README CHANGES INSTALL
 
 %post
-%{_sbindir}/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+/usr/sbin/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
 if [ -f /var/lock/subsys/httpd ]; then
 	%{_sysconfdir}/rc.d/init.d/httpd restart 1>&2
 fi
