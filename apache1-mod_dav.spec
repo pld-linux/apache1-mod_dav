@@ -7,7 +7,7 @@ Summary(es):	MСdulo DAV para Apache
 Summary(fr):	Module DAV pour Apache
 Summary(it):	Modulo DAV per Apache
 Summary(ja):	Apache мя╓н DAV ╔Б╔╦╔Е║╪╔К
-Summary(no):	En DAV-modul for Apache
+Summary(nb):	En DAV-modul for Apache
 Summary(pl):	ModuЁ WebDAV dla webserwera Apache
 Summary(pt):	Um mСdulo de DAV para o Apache
 Summary(ru):	Модуль, реализующий протокол DAV в Apache
