@@ -21,6 +21,7 @@ Release:	4
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
+Source1:	%{name}.conf
 URL:		http://www.webdav.org/mod_dav/
 Prereq:		%{_sbindir}/apxs
 BuildRequires:	expat-devel
@@ -145,14 +146,18 @@ autoconf
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_pkglibdir}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},/etc/httpd,/var/lock/mod_dav}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/mod_dav.conf
 
 gzip -9nf README CHANGES INSTALL
 
 %post
 %{_sbindir}/apxs -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*mod_dav.conf" /etc/httpd/httpd.conf; then
+	echo "Include /etc/httpd/mod_dav.conf" >> /etc/httpd/httpd.conf
+fi
 if [ -f /var/lock/subsys/httpd ]; then
 	%{_sysconfdir}/rc.d/init.d/httpd restart 1>&2
 fi
@@ -160,6 +165,9 @@ fi
 %preun
 if [ "$1" = "0" ]; then
 	%{_sbindir}/apxs -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+	grep -v -q "^Include.*mod_dav.conf" /etc/httpd/httpd.conf > \
+		/etc/httpd/httpd.conf.tmp
+	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
 	if [ -f /var/lock/subsys/httpd ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
@@ -171,4 +179,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc *.gz LICENSE.html
+%config(noreplace) /etc/httpd/mod_dav.conf
 %attr(755,root,root) %{_pkglibdir}/*
+%attr(750,http,http) /var/lock/mod_dav
