@@ -17,7 +17,7 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		apache_version	1.3.6
 Name:		apache1-mod_%{mod_name}
 Version:	1.0.3
-Release:	1
+Release:	1.3
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
@@ -26,19 +26,19 @@ Source1:	%{name}.conf
 Patch0:		%{name}-format.patch
 URL:		http://www.webdav.org/mod_dav/
 BuildRequires:	%{apxs}
-BuildRequires:	apache1-devel >= %{apache_version}
+BuildRequires:	apache1-devel >= 1.3.33-2
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	expat-devel
-Requires(post,preun):	%{apxs}
-Requires(post,preun):	grep
-Requires(preun):	fileutils
-Requires:	apache1 >= %{apache_version}
+Requires(triggerpostun):	grep
+Requires(triggerpostun):	%{apxs}
+Requires(triggerpostun):	sed >= 4.0
+Requires:	apache1 >= 1.3.33-2
 Obsoletes:	apache-mod_%{mod_name} <= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
 
 %description
 mod_dav enables Apache to understand DAV protocol (extensions to
@@ -152,38 +152,45 @@ Fusion в╕д NetObjects.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir},/var/lock/mod_dav}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/lock/mod_dav}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/mod_dav.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/90_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
-if [ -f %{_sysconfdir}/apache.conf ] && ! grep -q "^Include.*mod_dav.conf" %{_sysconfdir}/apache.conf; then
-	echo "Include %{_sysconfdir}/mod_dav.conf" >> %{_sysconfdir}/apache.conf
-fi
 if [ -f /var/lock/subsys/apache ]; then
 	/etc/rc.d/init.d/apache restart 1>&2
 fi
 
 %preun
 if [ "$1" = "0" ]; then
-	%{apxs} -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
-	umask 027
-	grep -v "^Include.*mod_dav.conf" %{_sysconfdir}/apache.conf > \
-		%{_sysconfdir}/apache.conf.tmp
-	mv -f %{_sysconfdir}/apache.conf.tmp %{_sysconfdir}/apache.conf
 	if [ -f /var/lock/subsys/apache ]; then
 		/etc/rc.d/init.d/apache restart 1>&2
 	fi
 fi
 
+%triggerpostun -- %{name} < 1.0.3-1.1
+if grep -q '^Include conf\.d' /etc/apache/apache.conf; then
+	%{apxs} -e -A -n %{mod_name} %{_pkglibdir}/libdav.so 1>&2
+	sed -i -e '
+		/^Include.*mod_%{mod_name}\.conf/d
+	' /etc/apache/apache.conf
+else
+	# they're still using old apache.conf
+	sed -i -e '
+		s,^Include.*mod_%{mod_name}\.conf,Include %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf,
+	' /etc/apache/apache.conf
+fi
+if [ -f /var/lock/subsys/apache ]; then
+	/etc/rc.d/init.d/apache restart 1>&2
+fi
+
 %files
 %defattr(644,root,root,755)
 %doc README CHANGES INSTALL LICENSE.html
-%config(noreplace) %{_sysconfdir}/mod_dav.conf
+%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
