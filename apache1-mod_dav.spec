@@ -42,7 +42,7 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-%configure \
+%configure2_13 \
 	--with-apxs=%{_sbindir}/apxs
 %{__make} APXS=%{_sbindir}/apxs
 
