@@ -146,10 +146,10 @@ Fusion ×¦Ä NetObjects.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},/etc/httpd,/var/lock/mod_dav}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd,/var/lock/mod_dav}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/mod_dav.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_dav.conf
 
 %post
 %{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
@@ -177,6 +177,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README CHANGES INSTALL LICENSE.html
-%config(noreplace) /etc/httpd/mod_dav.conf
+%config(noreplace) %{_sysconfdir}/httpd/mod_dav.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
