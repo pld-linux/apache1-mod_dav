@@ -21,6 +21,7 @@ Release:	6
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
+# Source0-md5:	ba83f2aa6e13b216a11d465b82aab484
 Source1:	apache1-mod_dav.conf
 Patch0:		%{name}-format.patch
 URL:		http://www.webdav.org/mod_dav/
