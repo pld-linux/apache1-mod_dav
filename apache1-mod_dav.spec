@@ -5,10 +5,10 @@ Summary(pl):	Modu³ WebDAV dla webserwera Apache
 Name:		apache-mod_%{mod_name}
 Version:	1.0.2
 Release:	1
+License:	OSI Approved
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
-License:	OSI Approved
 Source0:	http://www.webdav.org/mod_%{mod_name}/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 URL:		http://www.webdav.org/mod_%{mod_name}
 Prereq:		/usr/sbin/apxs
@@ -40,18 +40,17 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
-CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"; export CFLAGS
-%configure --with-apxs=%{_sbindir}/apxs
+%configure \
+	--with-apxs=%{_sbindir}/apxs
 %{__make} APXS=%{_sbindir}/apxs
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_pkglibdir}
-cp *.so $RPM_BUILD_ROOT%{_pkglibdir}
-%{!?debug:strip $RPM_BUILD_ROOT%{_pkglibdir}/*}
 
-%{_pkglibdir}/apache/libdav.so
-%doc README CHANGES INSTALL LICENSE.html
+install *.so $RPM_BUILD_ROOT%{_pkglibdir}
+
+gzip -9nf README CHANGES INSTALL LICENSE.html
 
 %clean
 rm -rf $RPM_BUILD_ROOT
