@@ -21,7 +21,7 @@ Release:	5
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
-Source1:	%{name}.conf
+Source1:	apache1-mod_dav.conf
 URL:		http://www.webdav.org/mod_dav/
 BuildRequires:	expat-devel
 BuildRequires:	%{apxs}
