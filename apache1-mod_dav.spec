@@ -34,7 +34,7 @@ to tak¿e kompletny zestaw protoko³ów s³u¿±cych do manipulowania
 plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 
 %prep 
-%setup -q -n mod_%{mod_name}-%{apache_version}
+%setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
 
 %build
 CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"; export CFLAGS
