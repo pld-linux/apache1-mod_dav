@@ -138,7 +138,7 @@ Fusion ×¦Ä NetObjects.
 
 %build
 aclocal
-autoconf
+%{__autoconf}
 %configure \
 	--with-apxs=%{apxs} \
 	--with-expat=%{_prefix}
