@@ -11,8 +11,11 @@ Group(pl):	Sieciowe/Serwery
 License:	OSI Approved
 Source0:	http://www.webdav.org/mod_%{mod_name}/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 URL:		http://www.webdav.org/mod_%{mod_name}
+Prereq:		/usr/sbin/apxs
+BuildRequires:	expat-devel
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
 Requires:	apache(EAPI)		>= %{apache_version}
+Requires:	expat
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{_sbindir}/apxs -q LIBEXECDIR)
@@ -38,7 +41,7 @@ plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
 
 %build
 CFLAGS="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O0 -g} %{?debug:-g -O0}"; export CFLAGS
-%configure --with-apxs=%{_sbindir}/apxs --with-expat=%{_prefix}
+%configure --with-apxs=%{_sbindir}/apxs
 %{__make} APXS=%{_sbindir}/apxs
 
 %install
