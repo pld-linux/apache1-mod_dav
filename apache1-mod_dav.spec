@@ -101,7 +101,7 @@ oznacza "Dystrybuowane Oznaczanie i Wersjonowanie", i jest
 zdefiniowany w RFC 2518. Podstawow± misj± DAV jest zast±piæ takie
 protoko³y jak te u¿ywane w Frontpage czy NetObjects' Fusion. Lecz DAV
 to tak¿e kompletny zestaw protoko³ów s³u¿±cych do manipulowania
-plikami i katalogami serwera Web, oraz ich w³±¶ciwo¶ciami.
+plikami i katalogami serwera Web, oraz ich w³a¶ciwo¶ciami.
 
 %description -l pt
 O módulo mod_dav dá ao servidor Web Apache a possibilidade de aceitar
