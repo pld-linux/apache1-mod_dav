@@ -17,7 +17,7 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		apache_version	1.3.6
 Name:		apache1-mod_%{mod_name}
 Version:	1.0.3
-Release:	1.3
+Release:	2
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
