@@ -23,12 +23,14 @@ Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
 Source1:	%{name}.conf
 URL:		http://www.webdav.org/mod_dav/
-Prereq:		%{_sbindir}/apxs
 BuildRequires:	expat-devel
 BuildRequires:	%{apxs}
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
+Requires(post,preun):	%{apxs}
+Requires(post,preun):	grep
+Requires(preun):	fileutils
 Requires:	apache(EAPI)		>= %{apache_version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mod_dav
@@ -148,8 +150,11 @@ Fusion ×¦Ä NetObjects.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd,/var/lock/mod_dav}
 
-install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}/
+install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
 install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd/mod_dav.conf
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 %{apxs} -e -a -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
@@ -163,6 +168,7 @@ fi
 %preun
 if [ "$1" = "0" ]; then
 	%{apxs} -e -A -n %{mod_name} %{_pkglibdir}/lib%{mod_name}.so 1>&2
+	umask 027
 	grep -v "^Include.*mod_dav.conf" /etc/httpd/httpd.conf > \
 		/etc/httpd/httpd.conf.tmp
 	mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
@@ -170,9 +176,6 @@ if [ "$1" = "0" ]; then
 		/etc/rc.d/init.d/httpd restart 1>&2
 	fi
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
