@@ -25,15 +25,15 @@ Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_versi
 Source1:	apache1-mod_dav.conf
 Patch0:		%{name}-format.patch
 URL:		http://www.webdav.org/mod_dav/
-BuildRequires:	expat-devel
 BuildRequires:	%{apxs}
+BuildRequires:	apache(EAPI)-devel >= %{apache_version}
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	apache(EAPI)-devel	>= %{apache_version}
+BuildRequires:	expat-devel
 Requires(post,preun):	%{apxs}
 Requires(post,preun):	grep
 Requires(preun):	fileutils
-Requires:	apache(EAPI)		>= %{apache_version}
+Requires:	apache(EAPI) >= %{apache_version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	mod_dav
 
