@@ -16,7 +16,7 @@ Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 %define		mod_name	dav
 Name:		apache-mod_%{mod_name}
 Version:	1.0.3
-Release:	1
+Release:	2
 License:	OSI Approved
 Group:		Networking/Daemons
 Group(cs):	SМ╩ovИ/DИmoni
