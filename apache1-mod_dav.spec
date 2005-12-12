@@ -30,8 +30,8 @@ BuildRequires:	apache1-devel >= 1.3.33-2
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	expat-devel
-Requires(triggerpostun):	grep
 Requires(triggerpostun):	%{apxs}
+Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache1 >= 1.3.33-2
 Obsoletes:	apache-mod_%{mod_name} <= %{version}
@@ -191,6 +191,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README CHANGES INSTALL LICENSE.html
-%attr(640,root,root) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
