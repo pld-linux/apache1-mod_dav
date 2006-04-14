@@ -1,5 +1,6 @@
 %define		mod_name	dav
 %define 	apxs	/usr/sbin/apxs1
+%define		apache_version	1.3.6
 Summary:	WebDAV module for the Apache Web server
 Summary(cs):	DAV modul pro WWW server Apache
 Summary(da):	En DAV-modul for Apache
@@ -14,7 +15,6 @@ Summary(pt):	Um mСdulo de DAV para o Apache
 Summary(ru):	Модуль, реализующий протокол DAV в Apache
 Summary(sv):	En DAV-modul till Apache
 Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
-%define		apache_version	1.3.6
 Name:		apache1-mod_%{mod_name}
 Version:	1.0.3
 Release:	2
@@ -30,11 +30,12 @@ BuildRequires:	apache1-devel >= 1.3.33-2
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	expat-devel
+BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(triggerpostun):	%{apxs}
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
 Requires:	apache1 >= 1.3.33-2
-Obsoletes:	apache-mod_%{mod_name} <= %{version}
+Obsoletes:	apache-mod_dav <= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
@@ -161,15 +162,11 @@ install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/90_mod_%{mod_name}.conf
 rm -rf $RPM_BUILD_ROOT
 
 %post
-if [ -f /var/lock/subsys/apache ]; then
-	/etc/rc.d/init.d/apache restart 1>&2
-fi
+%service -q apache restart
 
 %postun
 if [ "$1" = "0" ]; then
-	if [ -f /var/lock/subsys/apache ]; then
-		/etc/rc.d/init.d/apache restart 1>&2
-	fi
+	%service -q apache restart
 fi
 
 %triggerpostun -- %{name} < 1.0.3-1.1
