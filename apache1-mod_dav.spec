@@ -141,7 +141,7 @@ Fusion ×¦Ä NetObjects.
 
 %prep
 %setup -q -n mod_%{mod_name}-%{version}-%{apache_version}
-%patch -p1
+%patch0 -p1
 
 %build
 %{__aclocal}
