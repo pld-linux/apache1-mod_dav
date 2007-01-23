@@ -17,7 +17,7 @@ Summary(sv):	En DAV-modul till Apache
 Summary(uk):	Модуль, що реал╕зу╓ протокол DAV в Apache
 Name:		apache1-mod_%{mod_name}
 Version:	1.0.3
-Release:	2
+Release:	3
 License:	OSI Approved
 Group:		Networking/Daemons
 Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_version}.tar.gz
@@ -34,7 +34,7 @@ BuildRequires:	rpmbuild(macros) >= 1.268
 Requires(triggerpostun):	%{apxs}
 Requires(triggerpostun):	grep
 Requires(triggerpostun):	sed >= 4.0
-Requires:	apache1 >= 1.3.33-2
+Requires:	apache1(EAPI)
 Obsoletes:	apache-mod_dav <= 1.0.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
