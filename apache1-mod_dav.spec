@@ -2,19 +2,19 @@
 %define 	apxs	/usr/sbin/apxs1
 %define		apache_version	1.3.6
 Summary:	WebDAV module for the Apache Web server
-Summary(cs.UTF-8):   DAV modul pro WWW server Apache
-Summary(da.UTF-8):   En DAV-modul for Apache
-Summary(de.UTF-8):   Ein DAV-Modul für Apache
-Summary(es.UTF-8):   Módulo DAV para Apache
-Summary(fr.UTF-8):   Module DAV pour Apache
-Summary(it.UTF-8):   Modulo DAV per Apache
-Summary(ja.UTF-8):   Apache 用の DAV モジュール
-Summary(nb.UTF-8):   En DAV-modul for Apache
-Summary(pl.UTF-8):   Moduł WebDAV dla webserwera Apache
-Summary(pt.UTF-8):   Um módulo de DAV para o Apache
-Summary(ru.UTF-8):   Модуль, реализующий протокол DAV в Apache
-Summary(sv.UTF-8):   En DAV-modul till Apache
-Summary(uk.UTF-8):   Модуль, що реалізує протокол DAV в Apache
+Summary(cs.UTF-8):	DAV modul pro WWW server Apache
+Summary(da.UTF-8):	En DAV-modul for Apache
+Summary(de.UTF-8):	Ein DAV-Modul für Apache
+Summary(es.UTF-8):	Módulo DAV para Apache
+Summary(fr.UTF-8):	Module DAV pour Apache
+Summary(it.UTF-8):	Modulo DAV per Apache
+Summary(ja.UTF-8):	Apache 用の DAV モジュール
+Summary(nb.UTF-8):	En DAV-modul for Apache
+Summary(pl.UTF-8):	Moduł WebDAV dla webserwera Apache
+Summary(pt.UTF-8):	Um módulo de DAV para o Apache
+Summary(ru.UTF-8):	Модуль, реализующий протокол DAV в Apache
+Summary(sv.UTF-8):	En DAV-modul till Apache
+Summary(uk.UTF-8):	Модуль, що реалізує протокол DAV в Apache
 Name:		apache1-mod_%{mod_name}
 Version:	1.0.3
 Release:	3
