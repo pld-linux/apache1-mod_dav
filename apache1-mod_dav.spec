@@ -25,7 +25,7 @@ Source0:	http://www.webdav.org/mod_dav/mod_%{mod_name}-%{version}-%{apache_versi
 Source1:	%{name}.conf
 Patch0:		%{name}-format.patch
 URL:		http://www.webdav.org/mod_dav/
-BuildRequires:	%{apxs}
+BuildRequires:	apache1-apxs
 BuildRequires:	apache1-devel >= 1.3.33-2
 BuildRequires:	autoconf
 BuildRequires:	automake
