@@ -38,7 +38,7 @@ Obsoletes:	apache-mod_dav <= 1.0.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)/conf.d
 
 %description
 mod_dav enables Apache to understand DAV protocol (extensions to
@@ -152,10 +152,10 @@ Fusion від NetObjects.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d,/var/lock/mod_dav}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir},/var/lock/mod_dav}
 
 install lib%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/90_mod_%{mod_name}.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/90_mod_%{mod_name}.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -177,7 +177,7 @@ if grep -q '^Include conf\.d/\*\.conf' /etc/apache/apache.conf; then
 else
 	# they're still using old apache.conf
 	sed -i -e '
-		s,^Include.*mod_%{mod_name}\.conf,Include %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf,
+		s,^Include.*mod_%{mod_name}\.conf,Include %{_sysconfdir}/*_mod_%{mod_name}.conf,
 	' /etc/apache/apache.conf
 fi
 if [ -f /var/lock/subsys/apache ]; then
@@ -187,6 +187,6 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc README CHANGES INSTALL LICENSE.html
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*
 %attr(750,http,http) /var/lock/mod_dav
